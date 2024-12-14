@@ -1,0 +1,61 @@
+/* Container for the entire component */
+.woman-details-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header with name and image */
+  .woman-details-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
+  .woman-name {
+    font-size: 2rem;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .woman-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #ddd;
+  }
+  
+  /* Container for all information */
+  .woman-details-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  /* Style for each information item */
+  .info-item {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+  }
+  
+  .info-item strong {
+    color: #333;
+  }
+  
+  /* Small screen support */
+  @media (max-width: 600px) {
+    .woman-details-info {
+      grid-template-columns: 1fr;
+    }
+  }
+  
