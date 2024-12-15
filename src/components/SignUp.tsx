@@ -50,12 +50,12 @@ export default function SignUp(props: { disableCustomTheme?: boolean}) {
         if(user?.gender==="MAN"){
           const res= dispatch(updateExistingMan(user));
           //save in local storage 
-          localStorage.setItem("user", JSON.stringify(res));
+          localStorage.setItem("user", JSON.stringify(res.arg));
           navigate('/ManHomePage');
         }
         else{
           const res=dispatch(updateExistingWoman(user));
-          localStorage.setItem("user", JSON.stringify(res));
+          localStorage.setItem("user", JSON.stringify(res.arg));
           navigate('/WomanHomePage');
 
         }

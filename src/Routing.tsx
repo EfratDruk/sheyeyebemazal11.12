@@ -14,6 +14,7 @@ import ShowMan from "./components/ShowMan";
 import ManList from "./components/manList";
 import UploadImage from "./components/UploadImage";
 import { ManHomePage } from "./components/ManHomaPage";
+import { WomanHomePage } from "./components/WomanHomePage";
 
 const Routing =()=><Routes>
 <Route path='/' element={<HomePage/>}/>
@@ -31,7 +32,7 @@ const Routing =()=><Routes>
 <Route path='/ShowWoman' element={<ShowWoman/>}/>
 <Route path='/ShowMan' element={<ShowMan/>}/>
 <Route path="/ManHomePage" element={<ManHomePage/>}/>
-<Route path="/WomanHomePage" element={<ManHomePage/>}/>
+<Route path="/WomanHomePage" element={<WomanHomePage/>}/>
 
 </Routes>
 

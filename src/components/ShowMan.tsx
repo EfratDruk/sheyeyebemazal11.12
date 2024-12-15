@@ -186,6 +186,7 @@ const ShowMan: React.FC = () => {
   const dispatch = useDispatch();
   // const error = useSelector((state: RootState) => state.woman.error);
   const selectedMan = useSelector((state: RootState) => state.man.selectedMan);
+  const { imageUrl,error } = useSelector((state: RootState) => state.image);
   const location = useLocation();
   // const id=selectedMan?.id;
   const id = location.state?.manId; // אם womanId מגיע מ-state ב-location
@@ -211,11 +212,17 @@ const ShowMan: React.FC = () => {
     <div className="woman-details-container">
       <div className="woman-details-header">
         <h1 className="woman-name">{selectedMan.name}</h1>
-        <img
+        {/* <img
           className="woman-image"
           src={selectedMan.imagePath}
           alt={selectedMan.name}
-        />
+        /> */}
+              <img
+                        className="woman-image"
+                  style={{ width: "100%", height: "100%", borderRadius: "8px" }}
+                  src={`data:image/jpeg;base64,${imageUrl}`}
+                  alt={"pic"} 
+              />
       </div>
       <div className="woman-details-info">
         <div className="info-item">

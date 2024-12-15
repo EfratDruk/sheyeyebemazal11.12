@@ -37,6 +37,8 @@ export const fetchSignIn = createAsyncThunk<Users, { userData: UserData; navigat
             console.log("type", typeof (user));
             localStorage.setItem("user", JSON.stringify(user));
             switch (user.gender) {
+                //not haapend 
+                //bcs mm doesnt have gander
                 case 'MATCHMAKER':
                     console.log("mm-----");
                     
@@ -49,7 +51,7 @@ export const fetchSignIn = createAsyncThunk<Users, { userData: UserData; navigat
                 }
                     break;
                 case 'WOMAN':
-                    userData.navigate("/WomanList");
+                    userData.navigate("/WomanHomePage");
                     break;
                 default:
                     console.log("mm-----");
