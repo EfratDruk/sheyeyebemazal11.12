@@ -28,15 +28,13 @@ export default function AdjustmentList() {
   );
   const user = JSON.parse(localStorage.getItem("user"));
   const [description, setDescription] = useState("");
-  const [statusAdjustment, setStatusAdjustment] = useState(
-    selectedAdjustment?.statusAdjustment
-  );
-  // const [formData, setFormData]=useState({
-  //     description:'',
-  //     tatusAdjustment:'',
-  // })
+  const [statusAdjustment, setStatusAdjustment]=useState(selectedAdjustment?.statusAdjustment)
+// const [formData, setFormData]=useState({
+//     description:'',
+//     tatusAdjustment:'',
+// })
 
-  const [isDisable, setIsDisable] = useState(false);
+  const [isDisable, setIsDisable]=useState(false);
 
   // switch (user?.gender) {
   //     case "MAN":
@@ -90,74 +88,88 @@ export default function AdjustmentList() {
   useEffect(() => {
     dispatch(fetchAdjustments());
   }, []);
-
-
-  const handleInputChange = async (event, id: number) => {
+  const handleInputChange= async(event, id:number)=>{
     const newStatus=event.target.value;
     const adjustment: Adjustment = (await dispatch(fetchAdjustmentById(id))).payload;
-    if (adjustment.matchmakerId.id !== user.id) {
-      setIsDisable(true);
-      alert(`רק ${adjustment.matchmakerId.name} יכול לעדכן`);
-    } else {
-      setStatusAdjustment(newStatus); // מעדכנים את ה-state של התיאור
-      console.log("desc", description);
-
-      const updatedAdjustment = {
-        ...selectedAdjustment,
-        description: newStatus,
-      }; // מעדכנים את האובייקט
-      console.log("kkk", updatedAdjustment);
-
-      const updated = {
-        ...adjustment,
-        ...(adjustment.statusAdjustment = newStatus),
-      };
-      console.log("update adjustmebt", adjustment);
-
-      dispatch(descriptionUpdate(adjustment));
-
-      // שליחה ל- Redux לעדכון ה- Adjustment
-      const res = await dispatch(updateExistingAdjustment({ id, adjustment }));
-      console.log("Update response:", res); // תוכל לראות את התגובה
+    if(adjustment.matchmakerId.id!==user.id){
+        setIsDisable(true)
+        alert(רק ${adjustment.matchmakerId.name} יכול לעדכן)
     }
-    setIsDisable(false);
-  };
+    else{
+    setStatusAdjustment(newStatus); // מעדכנים את ה-state של התיאור
+    console.log("desc", description);
 
+    const updatedAdjustment = {
+      ...selectedAdjustment,
+      description: newStatus,
+    }; // מעדכנים את האובייקט
+    console.log("kkk", newStatus);
 
+    const updated = {
+      ...adjustment,
+      ...(adjustment.statusAdjustment = newStatus),
+    };
+    console.log("update adjustmebt", adjustment);
+
+    dispatch(descriptionUpdate(adjustment));
+
+    // שליחה ל- Redux לעדכון ה- Adjustment
+    const res = await dispatch(updateExistingAdjustment({ id, adjustment }));
+    console.log("Update response:", res); // תוכל לראות את התגובה
+    }
+     setIsDisable(false)
+
+  }
 
   const handleDescriptionChange = async (event, id) => {
     console.log("just desccc", description);
+
+    // setIsDisable(false)
+    // if(adjustment.matchmakerId.id!==user.id){
+    //     setIsDisable(true);
+    //     alert(רק ${adjustment.matchmakerId.name} יכול לעדכן)
+    // }
+    // else{
     const updatedDescription = event.target.value; // מקבלים את הערך החדש מהקלט
-    const adjustment: Adjustment = (await dispatch(fetchAdjustmentById(id)))
-      .payload;
-    if (adjustment.matchmakerId.id !== user.id) {
-      setIsDisable(true);
-      alert(`רק ${adjustment.matchmakerId.name} יכול לעדכן`);
-    } else {
-      setDescription(updatedDescription); // מעדכנים את ה-state של התיאור
-      console.log("desc", description);
-
-      const updatedAdjustment = {
-        ...selectedAdjustment,
-        description: updatedDescription,
-      }; // מעדכנים את האובייקט
-      console.log("kkk", updatedAdjustment);
-
-      const updated = {
-        ...adjustment,
-        ...(adjustment.description = updatedDescription),
-      };
-      console.log("update adjustmebt", adjustment);
-
-      dispatch(descriptionUpdate(adjustment));
-
-      // שליחה ל- Redux לעדכון ה- Adjustment
-      const res = await dispatch(updateExistingAdjustment({ id, adjustment }));
-      console.log("Update response:", res); // תוכל לראות את התגובה
+    const adjustment: Adjustment = (await dispatch(fetchAdjustmentById(id))).payload;
+    if(adjustment.matchmakerId.id!==user.id){
+        setIsDisable(true)
+        alert(רק ${adjustment.matchmakerId.name} יכול לעדכן)
     }
-    setIsDisable(false);
+    else{
+    setDescription(updatedDescription); // מעדכנים את ה-state של התיאור
+    console.log("desc", description);
+
+    const updatedAdjustment = {
+      ...selectedAdjustment,
+      description: updatedDescription,
+    }; // מעדכנים את האובייקט
+    console.log("kkk", updatedAdjustment);
+
+    const updated = {
+      ...adjustment,
+      ...(adjustment.description = updatedDescription),
+    };
+    console.log("update adjustmebt", adjustment);
+
+    dispatch(descriptionUpdate(adjustment));
+
+    // שליחה ל- Redux לעדכון ה- Adjustment
+    const res = await dispatch(updateExistingAdjustment({ id, adjustment }));
+    console.log("Update response:", res); // תוכל לראות את התגובה
+    }
+     setIsDisable(false)
   };
 
+  // const handleInputChange = (id: number) => {
+  //     // update the descadtoup
+  //     console.log("desc", description);
+
+  //     // setDescription(event?.target)
+  //     console.log("desc after", description);
+
+  //     dispatch(descriptionUpdate(description));
+  // }
 
   const handleChose = async (id: number) => {
     const adjustment: Adjustment = (await dispatch(fetchAdjustmentById(id)))
@@ -282,6 +294,7 @@ export default function AdjustmentList() {
                 </button>
               )}
               <br />
+              {/* <button onClick={() => handleUpdate(matchmaker.id)}>Update</button> */}
             </li>
           ))}
       </ul>

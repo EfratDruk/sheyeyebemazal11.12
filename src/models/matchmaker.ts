@@ -8,6 +8,5 @@ export interface Matchmaker{
      password: string ,
      email:string ,
      phone:string ,
-     requirements: Adjustment[],
-    
+     requirements: Adjustment[],   
 }

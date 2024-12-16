@@ -8,7 +8,7 @@ export interface Man extends Users{
     beard: Beard,
     smoking: Smoking ,
     studies :Studies ,
-    occupation: String  ,
+    occupation: string  ,
     future :StatusMan ,
     requirements: Adjustment[],
     his :His,

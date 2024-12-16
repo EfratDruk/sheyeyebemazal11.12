@@ -17,6 +17,7 @@ headers: {
   },
 }
 );
+// response.data.photo=`data:image/jpeg;base64,${response.data.photo}`
 return response.data;
 }
 

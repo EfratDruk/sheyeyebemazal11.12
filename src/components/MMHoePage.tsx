@@ -1,12 +1,14 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, Container, Grid, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
+import NavBar from './NavBar';
 
 export function MMHomePage() {
   return (
     <div>
       {/* Navbar */}
-      <AppBar position="sticky" color="primary">
+      <NavBar></NavBar>
+      {/* <AppBar position="sticky" color="primary">
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             דף הבית
@@ -15,7 +17,7 @@ export function MMHomePage() {
           <Button color="inherit" component={Link} to="/WomanList">רשימת בחורות</Button>
           <Button color="inherit" component={Link} to="/AdjustmentList">הצעות</Button>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
 
       {/* Main Content */}
       <Box sx={{ mt: 4 }}>

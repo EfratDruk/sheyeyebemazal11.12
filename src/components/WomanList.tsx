@@ -1,10 +1,9 @@
-import { useDispatch, useSelector } from "react-redux"
-import { AppDispatch, RootState } from "../store";
 import { useEffect } from "react";
-import { deleteExistingWoman, fetchWoman, fetchWomanById } from "../redux/features/womanSlice";
-import ShowWoman from "./ShowWoman";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Woman } from "../models/woman";
+import { deleteExistingWoman, fetchWoman } from "../redux/features/womanSlice";
+import { AppDispatch, RootState } from "../store";
 
 
 // interface WomanListProps {

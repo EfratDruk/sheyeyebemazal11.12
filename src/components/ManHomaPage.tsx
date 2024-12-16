@@ -1,13 +1,25 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, Container, Grid, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { height } from '@mui/system';
+import NavBar from './NavBar';
 
 export function ManHomePage() {
     const man=JSON.parse(localStorage.getItem('user'));
+
+
+// const handleChange=()=>{
+//   console.log("man",man);
+  
+//     const newMan={...man, father_name:"aba"}
+//     console.log("newMan",newMan);
+// }
+
   return (
     <div>
       {/* Navbar */}
-      <AppBar position="sticky" color="primary">
+      <NavBar></NavBar>
+      {/* <AppBar position="sticky" color="primary">
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             דף הבית
@@ -21,7 +33,7 @@ export function ManHomePage() {
           <Button color="inherit" component={Link} to="/WomanList">רשימת בחורות</Button>
           <Button color="inherit" component={Link} to="/AdjustmentList">הצעות שלי?</Button>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
 
       {/* Main Content */}
       <Box sx={{ mt: 27 }}>
@@ -30,6 +42,7 @@ export function ManHomePage() {
             <Typography>
                 hello to {man.name}
             </Typography>
+   
             {/* <Grid item xs={12} md={6}>
               <Paper elevation={3} sx={{ padding: 3 }}>
                 <Typography variant="h4" gutterBottom>

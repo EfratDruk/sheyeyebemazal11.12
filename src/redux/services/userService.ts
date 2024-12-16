@@ -23,9 +23,14 @@ export const signIn= async(user:UserData): Promise<any>=>{
             return null;
         
             case 409:
-                console.log("alart");
-                
-                alert("wrong password")
+                console.log("alart");     
+                // alert("wrong password")
+                //chaeck how to navigate to sign in again
+                const wrongPassword = window.confirm("Wrong password");
+                if (wrongPassword) {
+                  navigate("/SignIn"); // Navigate to the homepage
+                }
+           
                 break;    
             default:
                 break;

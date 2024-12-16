@@ -81,14 +81,15 @@
 //   },
 // };
 
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { deleteExistingMan, fetchDto, fetchManById } from "../redux/features/manSlice";
 import "../showDetails.css";
 import { AppDispatch, RootState } from "../store";
-import { useLocation } from "react-router-dom";
-import { Man } from "../models/man";
-import { useEffect } from "react";
 import { fetchWomanById } from "../redux/features/womanSlice";
-import { deleteExistingMan, fetchManById } from "../redux/features/manSlice";
+import { createNewAdjustment } from "../redux/features/AdjustmentSlice";
+import { logout } from "../redux/features/userSlice";
 
 
 // const ShowMan: React.FC = () => {
@@ -183,29 +184,60 @@ import { deleteExistingMan, fetchManById } from "../redux/features/manSlice";
 
 
 const ShowMan: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const location = useLocation();
+  const id = location.state?.manId; // אם womanId מגיע מ-state ב-location
+  // במקרה שאתה רוצה לוודא שה-id קיים לפני השימוש
+  if (!id) {
+    console.error("Id לא נמצא.");
+    return <div>לא נמצא id</div>;
+  }
+
   // const error = useSelector((state: RootState) => state.woman.error);
+  const navigate=useNavigate();
   const selectedMan = useSelector((state: RootState) => state.man.selectedMan);
   const { imageUrl,error } = useSelector((state: RootState) => state.image);
-  const location = useLocation();
   // const id=selectedMan?.id;
-  const id = location.state?.manId; // אם womanId מגיע מ-state ב-location
-  // const woman=JSON.parse(localStorage.getItem("user"))
+  const user=JSON.parse(localStorage.getItem('user'))
   // const { imageUrl,error } = useSelector((state: RootState) => state.image);
 
 
   useEffect(() => {
+    console.log("maybe");
+    console.log("id",id);
+    
     if (id) {
-      dispatch(fetchManById(id));  
+      // dispatch(fetchManById(id)); 
+      dispatch(fetchDto(id));
     }
+    console.log("selected woman",selectedMan);
+    console.log("selected woman",selectedMan);
+
   }, [dispatch, id]);
 
-  const handleDelete = (id: number) => {
-    dispatch(deleteExistingMan(id));
+  const handleDelete = () => {
+     const confirmLogout = window.confirm("Are you sure you want to delete?");
+     if (confirmLogout) {
+       dispatch(logout());
+       navigate("/"); // Navigate to the homepage
+     }
+   };
+
+  const handleCreateAdjustment = async (id: number) => {
+    const woman:Woman= (await dispatch(fetchWomanById(user.id))).payload;
+    console.log("new woman in show woman",woman);
+    
+    // נוודא שאתה שולח את selectedWoman ו-user בצורה נכונה
+    const res=dispatch(createNewAdjustment({man:selectedMan, woman}));
+    console.log("man & woman in show woman", selectedMan,woman);
+    console.log("res in show woman", res);
+    if(res!=null){
+      alert("Added successfully")
+    }
   };
 
   if (!selectedMan) {
-    return <div className="error-message">No selected woman available.</div>;
+    return <div className="error-message"> hgfc  No selected man available.</div>;
   }
 
   return (
@@ -219,8 +251,9 @@ const ShowMan: React.FC = () => {
         /> */}
               <img
                         className="woman-image"
-                  style={{ width: "100%", height: "100%", borderRadius: "8px" }}
-                  src={`data:image/jpeg;base64,${imageUrl}`}
+                  style={{ width: "50%", height: "50%", borderRadius: "8px" }}
+                  src={`data:image/jpeg;base64,${selectedMan.photo}`}
+                  // src={selectedMan.imagePath}
                   alt={"pic"} 
               />
       </div>
@@ -259,6 +292,19 @@ const ShowMan: React.FC = () => {
           <strong>Mother's Name:</strong> {selectedMan.mother_name}
         </div>
       </div>
+      {user.gender!=='MAN' ? (
+       <button
+       onClick={() => handleCreateAdjustment(selectedMan.id)}
+     >
+         צור הצעה 
+     </button>
+      ) : (
+          <button
+            onClick={() => handleDelete(selectedMan.id)}
+          >
+              מחק 
+          </button>
+      )}
     </div>
   );
 };

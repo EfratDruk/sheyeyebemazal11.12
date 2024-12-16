@@ -59,7 +59,7 @@ const handleUpdate = () => {
         <form onSubmit={handleUpdate}>
         <Grid container spacing={3}>
             <FormGrid size={{ xs: 6 }}>
-                <FormLabel htmlFor="smoking" required>
+                <FormLabel htmlFor="smoking" >
                     Smoke
                 </FormLabel>
                 <Select
@@ -69,7 +69,7 @@ const handleUpdate = () => {
                     value={formData.smoking}
                     onChange={handleInputChange}  // פונקציה לעדכון הערך שנבחר
                     //onBlur={handleSave}
-                    required
+                    
                     size="small"
                     displayEmpty
                 >
@@ -80,7 +80,7 @@ const handleUpdate = () => {
                 </Select>
             </FormGrid>
             <FormGrid size={{ xs: 6 }}>
-                <FormLabel htmlFor="future" required>
+                <FormLabel htmlFor="future" >
                     Current Status
                 </FormLabel>
                 <Select
@@ -90,7 +90,7 @@ const handleUpdate = () => {
                     value={formData.future}
                     onChange={handleInputChange}  // פונקציה לעדכון הערך שנבחר
                     //onBlur={handleSave}
-                    required
+                    
                     size="small"
                     displayEmpty
                 >
@@ -127,7 +127,7 @@ const handleUpdate = () => {
             </FormGrid>
 
             <FormGrid size={{ xs: 6 }}>
-                <FormLabel htmlFor="beard" required>
+                <FormLabel htmlFor="beard" >
                     Beard
                 </FormLabel>
                 <Select
@@ -137,7 +137,7 @@ const handleUpdate = () => {
                     value={formData.beard}
                     onChange={handleInputChange}  // פונקציה לעדכון הערך שנבחר
                     // onBlur={handleUpdate}
-                    required
+                    
                     size="small"
                     displayEmpty
                 >

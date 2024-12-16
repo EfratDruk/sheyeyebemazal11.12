@@ -14,6 +14,10 @@ export const getWomanById = async (id: number): Promise<Woman> => {
     const response = await axios.get(`/woman/womanById/${id}`);
     return response.data;
 };
+export const getWomanDto=async (id:number):Promise<Woman>=>{
+    const response=await axios.get(`users/getDTO/${id}`);
+    return response.data;
+}
 
 export const createWoman = async (woman: Woman): Promise<Woman> => {
     const response = await axios.post('/woman/addWoman', woman);

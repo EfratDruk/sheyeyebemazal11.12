@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUpload } from "../redux/features/imgSlice";
+import { fetchUpload, updateImage } from "../redux/features/imgSlice";
 import { updateUser } from "../redux/features/userSlice";
+
 import { AppDispatch, RootState } from "../store";
-import axios from "axios";
 
 const UploadImage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -12,7 +12,7 @@ const UploadImage: React.FC = () => {
   //take the user object from local stroage
   const user = JSON.parse(localStorage.getItem('user'));
   //take the user object from store
-  var userState = useSelector((state: RootState) => state.user.user);
+  let userState = useSelector((state: RootState) => state.user.user);
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [photo, setPhoto] = useState("");
@@ -54,15 +54,16 @@ const UploadImage: React.FC = () => {
 
   //update
   const handleUpload = async () => {
-
     // if null -return
     if (!selectedImage || !user) {
       console.log("!img||!user", selectedImage, user);
       return;
     }
+
     //בעיה:
     //הפונקציה הרגילה של עדכון מן/וומן בJAVA
     //לא יכולה לקבל כזה גודל של מחרוזת אז צריך לבדוק מה בדיוק לעשות ואיך לסדר את זה אולי עם  דיטיאו
+    
     //create file of FormData
     const formData = new FormData();
 
@@ -76,6 +77,8 @@ const UploadImage: React.FC = () => {
       const response = await dispatch(fetchUpload(formData));
       console.log("response after send", response);
 
+
+
       if (response.meta.requestStatus === "fulfilled") {
         //save only path
         const jsonResponse = response.payload;
@@ -83,16 +86,30 @@ const UploadImage: React.FC = () => {
         setPhoto(jsonResponse.photo);
 
         console.log("jsonResponse", jsonResponse.photo);
+
         console.log("userState?.imagePath", userState?.imagePath);
+        console.log(12345567);
+        
 
         //עדכון בסטור   טוב כי שורה אחרי ז התשובה היא טרו
         const updated = { ...userState, imagePath: jsonResponse.photo };
+        // const updated2 = { ...userState, imagePath: selectedImage };
 
+        console.log(345);
+        // dispatch(updateUser(updated2));
+
+        // dispatch(updateImage(updated));
+   
         // if(userState?.imagePath==null){
+        console.log(updated.imagePath);
+        
+
         if (updated.imagePath == null) {
+          console.log(345);
+          
           console.log("i want update user state", jsonResponse);
           //עדכון טוב במשתנה
-          userState = { ...user, imagePath: jsonResponse.photo };
+         // userState = { ...user,...user.imagePath=jsonResponse.photo};
 
           console.log("userState", userState);
           //עדכון בסטור

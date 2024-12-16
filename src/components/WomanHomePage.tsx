@@ -1,13 +1,14 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, Container, Grid, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
+import NavBar from './NavBar';
 
 export function WomanHomePage() {
     const woman=JSON.parse(localStorage.getItem('user'));
   return (
     <div>
       {/* Navbar */}
-      <AppBar position="sticky" color="primary">
+      {/* <AppBar position="sticky" color="primary">
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             דף הבית
@@ -21,7 +22,12 @@ export function WomanHomePage() {
           <Button color="inherit" component={Link} to="/ManList">רשימת בחורים</Button>
           <Button color="inherit" component={Link} to="/AdjustmentList">הצעות שלי?</Button>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
+      <NavBar>
+        
+      </NavBar>
+
+
 
       {/* Main Content */}
       <Box sx={{ mt: 27 }}>

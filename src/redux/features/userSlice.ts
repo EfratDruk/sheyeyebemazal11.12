@@ -26,13 +26,16 @@ export const fetchSignIn = createAsyncThunk<Users, { userData: UserData; navigat
     'user/signIn',
     async (userData: any) => {
         try {
-            console.log("usreData", userData.userData);
-            const user = await signIn(userData.userData)
-            if (!user) {
-                userData.navigate("/SignUp");
-            }
             console.log("userData", userData.userData);
-            console.log("user got from srver",user.status);
+            const user = await signIn(userData.userData)
+            console.log("iserr",user);
+            
+            if (!user) {
+                userData.navigate("/SignUp");  
+        }
+           
+            console.log("userData", userData.userData);
+            console.log("user got from server",user.status);
             
             console.log("type", typeof (user));
             localStorage.setItem("user", JSON.stringify(user));
@@ -59,10 +62,20 @@ export const fetchSignIn = createAsyncThunk<Users, { userData: UserData; navigat
                     console.log("navigate");
                     return user;
             }
+        
         } catch (error) {
             // return thunkAPI.rejectWithValue(error)
+            console.log("error",error);
+            
             if (error.status == 404) {
                 userData.navigate("/SignUp");
+            }
+            if(error.status==409){
+                const wrongPassword = window.confirm("Are you sure you want to log out?");
+                if (wrongPassword) {
+                  userData.navigate('/SignIn')
+                }
+           
             }
             console.log("the error------", error);
 
@@ -91,9 +104,9 @@ export const fetchSignUp = createAsyncThunk<any, Users>(
 )
 
 
-export const fetchHis = createAsyncThunk<any, Requirements>(
+export const fetchHis = createAsyncThunk<His, His>(
     'user/fetchHis',
-    async (his: Requirements) => {
+    async (his: His) => {
         try {
             console.log("in fetch requirment", his);
             const newHis = await createHis(his)
@@ -128,6 +141,7 @@ const userSlice = createSlice({
     reducers: {
         logout:()=>{
             localStorage.removeItem('user');
+            //send to homepage
         },
         updateUser: (state, action: PayloadAction<Users|undefined>) => {
             console.log("action in update", action.payload);
@@ -135,9 +149,22 @@ const userSlice = createSlice({
                 // state.user = {};
                 console.log("in update----------");
             }
-            const s={ ...state.user, ...action.payload };
-            console.log("s",s);
-            state.user={ ...state.user, ...action.payload };
+
+            state.user={...state.user,...action.payload};
+            console.log("state.user",state.user);
+
+        
+            
+        },
+
+        update:(state, action:PayloadAction<His>)=>{
+            console.log("update hisss");
+            console.log("action",action);
+            
+            state.user={...state.user, his:action.payload}  
+            console.log("state.user",state.user);
+            return state.user
+
         }
         // updateImg:(state: WritableDraft<Users>, action:PayloadAction<File>)=>{
         //     try{
@@ -158,13 +185,15 @@ const userSlice = createSlice({
                 state.error = action.error.message || 'failed'
             })
             .addCase(fetchHer.fulfilled, (state, action: PayloadAction<any>) => {
-                state.user.her = action.payload.id;
+                state.user.her = action.payload;
             })
             .addCase(fetchHer.rejected, (state, action) => {
                 state.error = action.error.message || 'failed'
             })
             .addCase(fetchHis.fulfilled, (state, action: PayloadAction<any>) => {
-                state.user.his = action.payload.id;
+                state.user = action.payload;
+                
+                
             })
             .addCase(fetchHis.rejected, (state, action) => {
                 state.error = action.error.message || 'failed'
@@ -178,5 +207,5 @@ const userSlice = createSlice({
     })
 })
 
-export const { updateUser ,logout} = userSlice.actions;
+export const { updateUser ,logout, update} = userSlice.actions;
 export default userSlice.reducer;

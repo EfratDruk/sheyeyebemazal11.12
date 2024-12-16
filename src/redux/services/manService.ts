@@ -13,6 +13,11 @@ export const getManById = async (id: number): Promise<Man> => {
     return response.data;
 };
 
+export const getDto = async (id: number): Promise<Man> => {
+    const response = await axios.get(`/users/getDTO/${id}`);
+    return response.data;
+};
+
 export const createMan = async (man: Man): Promise<Man> => {
     const response = await axios.post('/man/addMan', man);
     return response.data;

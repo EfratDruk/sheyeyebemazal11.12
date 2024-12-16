@@ -1,19 +1,15 @@
-import * as React from 'react';
 
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import { Button, MenuItem, Select } from '@mui/material';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid2';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { height, styled } from '@mui/system';
-import { Button, MenuItem, Select } from '@mui/material';
+import { styled } from '@mui/system';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchSignUp, updateUser } from '../redux/features/userSlice';
-import { Users } from '../models/users';
+import { nextStep } from '../redux/features/currentStepSlice';
+import { updateUser } from '../redux/features/userSlice';
 import { AppDispatch, RootState } from '../store';
 import UploadImage from './UploadImage';
-import { nextStep, previousStep } from '../redux/features/currentStepSlice';
 
 
 const FormGrid = styled(Grid)(() => ({
@@ -33,6 +29,7 @@ export default function UserForm2() {
     land: "",
     phon: "",
     dateOfBirth: "",
+    // imagePath:"",
     //address: "",
     type_phon: "",
     budget: "",

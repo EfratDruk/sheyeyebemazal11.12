@@ -1,6 +1,7 @@
 enum StatusAdjustment {
     new = "חדש",
     processes = "בטיפול",
+    waiting='ממתין',
     null = "null",
 }
 enum Type {

@@ -33,6 +33,7 @@ const Routing =()=><Routes>
 <Route path='/ShowMan' element={<ShowMan/>}/>
 <Route path="/ManHomePage" element={<ManHomePage/>}/>
 <Route path="/WomanHomePage" element={<WomanHomePage/>}/>
+<Route path="/UploadImg" element={<UploadImage/>}/>
 
 </Routes>
 

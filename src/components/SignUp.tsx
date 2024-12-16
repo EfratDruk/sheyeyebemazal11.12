@@ -1,8 +1,5 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid2';
 import Stack from '@mui/material/Stack';
@@ -10,25 +7,26 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography';
-import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { restartStep } from '../redux/features/currentStepSlice';
+import { fetchManById, updateExistingMan } from '../redux/features/manSlice';
+import { updateUser } from '../redux/features/userSlice';
+import { updateExistingWoman } from '../redux/features/womanSlice';
+import { AppDispatch, RootState } from '../store';
 import AppTheme from '../theme/AppTheme';
+import HerForm from './HerForm';
+import HisForm from './HisForm';
+import ManForm from './ManForm';
+import { ManHomePage } from './ManHomaPage';
 import UserForm1 from './UserForm1';
 import UserForm2 from './UserForm2';
 import UserForm3 from './UsreForm3';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../store';
-import ManForm from './ManForm';
 import WomanForm from './WomanForm';
-import HerForm from './HerForm';
-import HisForm from './HisForm';
-import ManList from './manList';
 import WomanList from './womanList';
-import { useNavigate } from 'react-router-dom';
-import { nextStep, restartStep } from '../redux/features/currentStepSlice';
-import { updateExistingMan } from '../redux/features/manSlice';
-import { updateExistingWoman } from '../redux/features/womanSlice';
-import { ManHomePage } from './ManHomaPage';
+// import { omit } from 'lodash';
+
 
 export default function SignUp(props: { disableCustomTheme?: boolean}) {
     const steps = ['Personal-details', 'Aboute-me', 'More', 'more2', 'My-requirments'];
@@ -36,21 +34,47 @@ export default function SignUp(props: { disableCustomTheme?: boolean}) {
     const dispatch=useDispatch<AppDispatch>();
     //to progress i sign up
     const activeStep=useSelector((state:RootState)=>state.currentStep.currentStep);
-
-
     //take updated user from stor snd save changes in db too
     const user = useSelector((state: RootState) => state.user.user);
     //the path of img from stor in base64 form
-    const imageUrl=useSelector((state:RootState)=>state.image.imageUrl)
+    const imageUrl=useSelector((state:RootState)=>state.image.image)
    
 
-    const handleNext=()=>{
+    const handleNext=async ()=>{
         console.log("user sign uppppp", user);
 
         if(user?.gender==="MAN"){
-          const res= dispatch(updateExistingMan(user));
+
+          const man:Man=await (dispatch(fetchManById(user.id)));
+          console.log("man",man);
+
+          const newMan={...user, imagePath:man.payload.imagePath}
+          console.log("user after change imagepath",user);
+          console.log("newMan after change imagepath",newMan);
+          
+          const res=dispatch(updateUser(newMan));
+          console.log("after set state with new path",res);
+          
+          const res2= dispatch(updateExistingMan(newMan));
+          console.log("after update n h2",res2);
+      
+
           //save in local storage 
-          localStorage.setItem("user", JSON.stringify(res.arg));
+          console.log("imageUrl",imageUrl);
+
+          const userWithBase64={...user,imagePath:imageUrl}
+
+          console.log("user in form user himself",user);
+          console.log("userWithBase64 in form user",userWithBase64);
+          const with64=dispatch(updateUser(userWithBase64));
+          
+          console.log("עדכון בסטור עם תמונה של 64", with64);
+          console.log("user after update",user);
+          
+          
+        
+
+          localStorage.setItem("user", JSON.stringify(userWithBase64));
           navigate('/ManHomePage');
         }
         else{
@@ -62,6 +86,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean}) {
     }
 
     function getStepContent(step: number) {
+      if(user){
         switch (step) {
           case 0:
             return <UserForm1 />;
@@ -92,7 +117,8 @@ export default function SignUp(props: { disableCustomTheme?: boolean}) {
     
           default:
             throw new Error('Unknown step');
-        }
+         }
+         }
       }
       React.useEffect(() => {
         console.log("restart step");

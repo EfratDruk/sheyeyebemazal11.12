@@ -397,10 +397,11 @@ function HomePage() {
     <ThemeProvider theme={theme}>
       <div>
         {/* Navbar */}
-{/* <NavBar></NavBar> */}
-        <AppBar position="sticky" color="primary">
+        <NavBar></NavBar>
+
+        {/* <AppBar position="sticky" color="primary">
           <Toolbar>
-          <img src="./img/engagement-ring.png" alt="Engagement Rings" style={{ width: 'auto', height: '100px' }} />
+          <img src="./img/שיהיה במזל.png" alt="Engagement Rings" style={{ width: 'auto', height: '100px' }} />
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               שיהיה במזל 
             </Typography>
@@ -408,8 +409,8 @@ function HomePage() {
             <Button color="inherit" component={Link} to="/">בית</Button>
             <Button color="inherit" component={Link} to="/SignIn">התחבר</Button>
             {/* <Button color="inherit" component={Link} to="/contact">צור קשר</Button> */}
-          </Toolbar>
-        </AppBar> 
+          {/* </Toolbar>
+        </AppBar>  */} 
 
          {/* Main Content */}
         <Box sx={{ mt: 4, backgroundColor: '#fff', py: 6 }}>

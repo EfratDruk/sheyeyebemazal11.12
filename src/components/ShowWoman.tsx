@@ -53,16 +53,15 @@
 // }
 // export default ShowWoman
 
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store";
 import { useEffect } from "react";
-import { deleteExistingWoman, fetchWomanById } from "../redux/features/womanSlice";
-import { useLocation } from "react-router-dom";
-import UploadImage from "./UploadImage";
-import { createAdjustment } from "../redux/services/AdjustmentService";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Man } from "../models/man";
 import { createNewAdjustment } from "../redux/features/AdjustmentSlice";
 import { fetchManById } from "../redux/features/manSlice";
-import { Man } from "../models/man";
+import { deleteExistingWoman, fetchWomanById, getDTO } from "../redux/features/womanSlice";
+import { AppDispatch, RootState } from "../store";
+import { logout } from "../redux/features/userSlice";
 
 
 // Component Styles
@@ -141,24 +140,41 @@ const styles = {
 
 const ShowWoman: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  // const error = useSelector((state: RootState) => state.woman.error);
-  const selectedWoman = useSelector((state: RootState) => state.woman.selectedWoman);
   const location = useLocation();
   const id = location.state?.womanId; // אם womanId מגיע מ-state ב-location
-  // var user:Man;
-  const user=JSON.parse(localStorage.getItem("user"));
+  // במקרה שאתה רוצה לוודא שה-id קיים לפני השימוש
+  if (!id) {
+    console.error("Id לא נמצא.");
+    return <div>לא נמצא id</div>;
+  }
+  const selectedWoman = useSelector((state: RootState) => state.woman.selectedWoman);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const navigate=useNavigate();
   const { imageUrl,error } = useSelector((state: RootState) => state.image);
+  const user=JSON.parse(localStorage.getItem("user"));
+  // var user:Man;
 
 
   useEffect(() => {
+    console.log("maybe");
+    console.log("id",id);
     if (id) {
-      dispatch(fetchWomanById(id));  
+      // dispatch(fetchWomanById(id));  
+      dispatch(getDTO(id));
     }
+    console.log("selected woman",selectedWoman);
+    console.log("selected woman",selectedWoman.photo);
+
+    
   }, [dispatch, id]);
 
-  const handleDelete = (id: number) => {
-    dispatch(deleteExistingWoman(id));
-  };
+   const handleDelete = () => {
+     const confirmLogout = window.confirm("Are you sure you want to delete?");
+     if (confirmLogout) {
+       dispatch(logout());
+       navigate("/"); // Navigate to the homepage
+     }
+   };
 
   // const handleCreateAdjustment=(id:number)=>{
   //      dispatch(createNewAdjustment(selectedWoman, user));
@@ -176,10 +192,11 @@ const handleCreateAdjustment = async (id: number) => {
   if(res!=null){
     alert("Added successfully")
   }
-  
-  
 };
 
+if (!selectedWoman) {
+  return <div className="error-message"> hereeeeeee No selected woman available.</div>;
+}
 
   return (<>
     <div style={styles.container}>
@@ -193,7 +210,7 @@ const handleCreateAdjustment = async (id: number) => {
             <div style={styles.value}>{selectedWoman.name}</div>
           </div>
           <img
-                  style={{ width: "100%", height: "100%", borderRadius: "8px" }}
+                  style={{ width: "50%", height: "50%", borderRadius: "8px" }}
                   src={`data:image/jpeg;base64,${selectedWoman.photo}`}
                   alt={"pic"} 
               />
@@ -239,26 +256,24 @@ const handleCreateAdjustment = async (id: number) => {
             <p style={styles.herInfoText}><strong>זקן:</strong> {selectedWoman.her?.beard || 'לא צוין'}</p>
           </div>
 
-      {/* {user.gender!=='WOMAN'?(
-        <>
+      
 
-        </>
-      )} */}
-       (if(user.gender!=='WOMAN'{
-          <button
-            style={styles.button}
-            onClick={() => handleCreateAdjustment(selectedWoman.id)}
-          >
-              צור הצעה 
-          </button>
-            }))
-
+{user.gender!=='WOMAN' ? (
+       <button
+       style={styles.button}
+       onClick={() => handleCreateAdjustment(selectedWoman.id)}
+     >
+         צור הצעה 
+     </button>
+      ) : (
           <button
             style={styles.button}
             onClick={() => handleDelete(selectedWoman.id)}
           >
               מחק 
           </button>
+      )}
+
 
         </>
       ) : (
